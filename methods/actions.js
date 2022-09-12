@@ -6,7 +6,7 @@ var j_dec = require('jwt-decode')
 var functions = {
     addNew: function (req, res) {
         if ((!req.body.name) || (!req.body.password)) {
-            res.json({success: false, msg: 'Enter all fields'})
+            res.json({success: false, msg: 'Entrez tous les champs'})
         }
         else {
             var newUser = User({
@@ -15,10 +15,10 @@ var functions = {
             });
             newUser.save(function (err, newUser) {
                 if (err) {
-                    res.json({success: false, msg: 'Failed to save'})
+                    res.json({success: false, msg: 'Enregistrement échoué'})
                 }
                 else {
-                    res.json({success: true, msg: 'Successfully saved'})
+                    res.json({success: true, msg: 'Enregistré avec succès'})
                 }
             })
         }
@@ -29,7 +29,7 @@ var functions = {
         }, function (err, user) {
                 if (err) throw err
                 if (!user) {
-                    res.status(403).send({success: false, msg: 'Authentication Failed, User not found'})
+                    res.status(403).send({success: false, msg: 'Échec de l\'authentification, utilisateur introuvable'})
                 }
 
                 else {
@@ -39,7 +39,7 @@ var functions = {
                             res.json({success: true, token: token})
                         }
                         else {
-                            return res.status(403).send({success: false, msg: 'Authentication failed, wrong password'})
+                            return res.status(403).send({success: false, msg: 'Échec de l\'authentification, mot de passe erroné'})
                         }
                     })
                 }
@@ -50,7 +50,7 @@ var functions = {
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
             var decodedtoken = j_dec(token, config.secret)
-            return res.json({success: true, msg: 'Hello ' + decodedtoken.name})
+            return res.json({success: true, msg: 'Salut ' + decodedtoken.name})
         }
         else {
             return res.json({success: false, msg: 'No Headers'})
